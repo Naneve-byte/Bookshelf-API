@@ -27,14 +27,14 @@ const addBookHandler = (request, h) => {
     return response
   }
 
-  const id = nanoid(16)
+  const bookId = nanoid(16)
 
   const finished = pageCount === readPage
   const insertedAt = new Date().toISOString()
   const updatedAt = insertedAt
 
   const newBook = {
-    id,
+    bookId,
     name,
     year,
     author,
@@ -50,14 +50,14 @@ const addBookHandler = (request, h) => {
 
   books.push(newBook)
 
-  const isSuccess = books.filter((book) => book.id === id).length > 0
+  const isSuccess = books.filter((book) => book.bookId === bookId).length > 0
 
   if (isSuccess) {
     const response = h.response({
       status: 'success',
       message: 'Buku berhasil ditambahkan',
       data: {
-        noteId: id,
+        noteId: bookId,
       },
     })
     response.code(201)
@@ -103,7 +103,7 @@ const getAllBookHandler = (request, h) => {
     status: 'success',
     data: {
       books: filteredBooks.map((book) => ({
-        id: book.id,
+        bookId: book.bookId,
         name: book.name,
         publisher: book.publisher,
       })),
@@ -117,7 +117,7 @@ const getBookByIdHandler = (request, h) => {
   const {
     bookId,
   } = request.params
-  const book = books.filter((n) => n.id === bookId)[0]
+  const book = books.filter((n) => n.bookId === bookId)[0]
 
   if (book !== undefined) {
     return {
@@ -164,7 +164,7 @@ const editBookByIdHandler = (request, h) => {
 
   const upadatedAt = new Date().toISOString()
 
-  const index = books.findIndex((book) => book.id === bookId)
+  const index = books.findIndex((book) => book.bookId === bookId)
 
   if (index !== -1) {
     books[index] = {
@@ -201,7 +201,7 @@ const deleteBookByIdHandler = (request, h) => {
     bookId,
   } = request.params
 
-  const index = books.findIndex((book) => book.id === bookId)
+  const index = books.findIndex((book) => book.bookId === bookId)
 
   if (index !== -1) {
     books.splice(index, 1)
